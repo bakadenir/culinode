@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'core/theme/colors.dart';
-import 'core/theme/typography.dart';
-import 'core/theme/shadows.dart';
-import 'core/user_profile.dart';
+import '../core/theme/colors.dart';
+import '../core/theme/typography.dart';
+import '../core/theme/shadows.dart';
+import '../core/user_profile.dart';
 import 'edit_profil_screen.dart';
 import 'onboarding_screen.dart';
 import 'riwayat_ulasan_screen.dart';

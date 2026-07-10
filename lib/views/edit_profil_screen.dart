@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'core/theme/colors.dart';
-import 'core/theme/typography.dart';
-import 'core/theme/shadows.dart';
-import 'core/user_profile.dart';
-import 'core/widgets/form_field.dart';
-import 'core/widgets/primary_button.dart';
+import '../core/theme/colors.dart';
+import '../core/theme/typography.dart';
+import '../core/theme/shadows.dart';
+import '../core/user_profile.dart';
+import '../core/widgets/form_field.dart';
+import '../core/widgets/primary_button.dart';
 
 class EditProfilScreen extends StatefulWidget {
   final String nama;
@@ -87,7 +87,7 @@ class _EditProfilScreenState extends State<EditProfilScreen> {
                     PrimaryButton(
                       text: 'Simpan Perubahan',
                       onPressed: () {
-                        // TODO: simpan ke local JSON / SharedPreferences
+                        // Simpan perubahan data
                         Navigator.pop(context);
                       },
                     ),

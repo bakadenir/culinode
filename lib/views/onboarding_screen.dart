@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:culinode/daftar_screen.dart';
-import 'core/theme/colors.dart';
-import 'core/theme/typography.dart';
-import 'core/widgets/primary_button.dart';
+import 'daftar_screen.dart';
+import 'masuk_screen.dart';
+import '../core/theme/colors.dart';
+import '../core/theme/typography.dart';
+import '../core/widgets/primary_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

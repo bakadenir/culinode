@@ -1,40 +1,74 @@
 import 'package:flutter/material.dart';
-import 'core/theme/colors.dart';
-import 'core/theme/typography.dart';
-import 'core/widgets/primary_button.dart';
-import 'core/widgets/form_field.dart';
-import 'core/widgets/social_login_row.dart';
-import 'daftar_screen.dart';
+import 'package:flutter/services.dart';
+import '../core/theme/colors.dart';
+import '../core/theme/typography.dart';
+import '../core/widgets/primary_button.dart';
+import '../core/widgets/form_field.dart';
+import '../core/widgets/social_login_row.dart';
+import 'masuk_screen.dart';
 import 'main_screen.dart';
 
-class MasukScreen extends StatefulWidget {
-  const MasukScreen({super.key});
-
+/// Formatter: kapital otomatis di setiap kata
+class _CapitalizeEachWordFormatter extends TextInputFormatter {
   @override
-  State<MasukScreen> createState() => _MasukScreenState();
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text;
+    if (text.isEmpty) return newValue;
+    final capitalized = text
+        .split(' ')
+        .map((word) {
+          if (word.isEmpty) return word;
+          return word[0].toUpperCase() + word.substring(1).toLowerCase();
+        })
+        .join(' ');
+    return TextEditingValue(
+      text: capitalized,
+      selection: TextSelection.collapsed(offset: capitalized.length),
+    );
+  }
 }
 
-class _MasukScreenState extends State<MasukScreen> {
+class DaftarScreen extends StatefulWidget {
+  const DaftarScreen({super.key});
+
+  @override
+  State<DaftarScreen> createState() => _DaftarScreenState();
+}
+
+class _DaftarScreenState extends State<DaftarScreen> {
+  final _namaController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
 
+  bool get _namaFilled => _namaController.text.trim().isNotEmpty;
   bool get _emailFilled => _emailController.text.trim().isNotEmpty;
+  bool get _passwordFilled => _passwordController.text.isNotEmpty;
+  bool get _confirmPasswordFilled => _confirmPasswordController.text.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
+    _namaController.addListener(_rebuild);
     _emailController.addListener(_rebuild);
     _passwordController.addListener(_rebuild);
+    _confirmPasswordController.addListener(_rebuild);
   }
 
   void _rebuild() => setState(() {});
 
   @override
   void dispose() {
+    _namaController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -46,7 +80,7 @@ class _MasukScreenState extends State<MasukScreen> {
           ? Padding(
               key: const ValueKey('check'),
               padding: const EdgeInsets.only(right: 12),
-              child: const Icon(
+              child: Icon(
                 Icons.check_circle,
                 size: 20,
                 color: AppColors.primary,
@@ -90,10 +124,23 @@ class _MasukScreenState extends State<MasukScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Masuk',
+                'Daftar',
                 style: AppTextStyles.h1.copyWith(color: AppColors.text1),
               ),
               const SizedBox(height: 40),
+
+              // ── Nama Lengkap ──────────────────────────────
+              AppFormField(
+                label: 'Nama Lengkap',
+                controller: _namaController,
+                textCapitalization: TextCapitalization.words,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                  _CapitalizeEachWordFormatter(),
+                ],
+                suffixIcon: _checkIcon(_namaFilled),
+              ),
+              const SizedBox(height: 32),
 
               // ── Email ─────────────────────────────────────
               AppFormField(
@@ -111,32 +158,27 @@ class _MasukScreenState extends State<MasukScreen> {
                 obscureText: !_passwordVisible,
                 suffixIcon: _eyeIcon(
                   visible: _passwordVisible,
-                  onTap: () =>
-                      setState(() => _passwordVisible = !_passwordVisible),
+                  onTap: () => setState(() => _passwordVisible = !_passwordVisible),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 32),
 
-              // ── Lupa Password ────────────────────────────
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    // TODO: navigasi ke halaman reset password
-                  },
-                  child: Text(
-                    'Lupa Password?',
-                    style: AppTextStyles.body14.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
+              // ── Confirm Password ──────────────────────────
+              AppFormField(
+                label: 'Confirm Password',
+                controller: _confirmPasswordController,
+                obscureText: !_confirmPasswordVisible,
+                suffixIcon: _eyeIcon(
+                  visible: _confirmPasswordVisible,
+                  onTap: () => setState(
+                    () => _confirmPasswordVisible = !_confirmPasswordVisible,
                   ),
                 ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 32),
 
               PrimaryButton(
-                text: 'masuk',
+                text: 'daftar',
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -148,7 +190,7 @@ class _MasukScreenState extends State<MasukScreen> {
               Row(
                 children: [
                   Text(
-                    'Belum punya akun? ',
+                    'Sudah punya akun? ',
                     style: AppTextStyles.body16.copyWith(
                       color: AppColors.text2,
                     ),
@@ -157,11 +199,11 @@ class _MasukScreenState extends State<MasukScreen> {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => const DaftarScreen()),
+                        MaterialPageRoute(builder: (_) => const MasukScreen()),
                       );
                     },
                     child: Text(
-                      'Daftar',
+                      'Masuk',
                       style: AppTextStyles.body16.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -173,13 +215,13 @@ class _MasukScreenState extends State<MasukScreen> {
               const SizedBox(height: 48),
               SocialLoginRow(
                 onGoogleTap: () {
-                  // TODO: Login via Google
+                  // Logika Google
                 },
                 onFacebookTap: () {
-                  // TODO: Login via Facebook
+                  // Logika Facebook
                 },
                 onTwitterTap: () {
-                  // TODO: Login via Twitter/X
+                  // Logika Twitter
                 },
               ),
             ],

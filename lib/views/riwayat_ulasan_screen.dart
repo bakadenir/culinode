@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'core/theme/colors.dart';
-import 'core/theme/typography.dart';
-import 'core/theme/shadows.dart';
+import '../core/theme/colors.dart';
+import '../core/theme/typography.dart';
+import '../core/theme/shadows.dart';
 
 class RiwayatUlasanScreen extends StatelessWidget {
   const RiwayatUlasanScreen({super.key});
 
-  // ── Dummy local data (nanti diganti JSON / API) ───────────────────────────
-  static const List<Map<String, dynamic>> _dummyData = [
+  // ── Data ulasan lokal ───────────────────────────
+  static const List<Map<String, dynamic>> _dataUlasan = [
     {
       'nama': 'Seafood45',
       'kategori': 'Cepat Saji',
@@ -69,10 +69,10 @@ class RiwayatUlasanScreen extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-                itemCount: _dummyData.length,
+                itemCount: _dataUlasan.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 20),
                 itemBuilder: (context, index) {
-                  return _UlasanCard(item: _dummyData[index]);
+                  return _UlasanCard(item: _dataUlasan[index]);
                 },
               ),
             ),

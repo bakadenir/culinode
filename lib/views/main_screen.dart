@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'core/widgets/app_bottom_nav_bar.dart';
-import 'core/theme/colors.dart';
+import '../core/widgets/app_bottom_nav_bar.dart';
+import '../core/theme/colors.dart';
 import 'profil_screen.dart';
 import 'favorit_screen.dart';
 import 'notifikasi_screen.dart';

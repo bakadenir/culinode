@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'views/splash_screen.dart';
+import 'providers/restoran_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,10 +11,15 @@ void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      scrollBehavior: _NoOverscroll(),
-      home: SplashScreen(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestoranProvider()),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        scrollBehavior: _NoOverscroll(),
+        home: SplashScreen(),
+      ),
     ),
   );
 }

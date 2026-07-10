@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Aplikasi ini membutuhkan akses lokasi Anda untuk menampilkan restoran terdekat.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Aplikasi ini membutuhkan akses lokasi Anda untuk menampilkan restoran terdekat.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikasi ini membutuhkan akses kamera untuk mengambil foto ulasan restoran.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

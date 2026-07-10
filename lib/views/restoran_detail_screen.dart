@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'core/theme/colors.dart';
-import 'core/theme/typography.dart';
-import 'core/theme/shadows.dart';
+import '../core/theme/colors.dart';
+import '../core/theme/typography.dart';
+import '../core/theme/shadows.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import '../models/restoran_model.dart';
 
 /// 🍽️ Screen Detail Restoran — Culinode
 ///
 /// Menampilkan info lengkap restoran: hero image, nama, rating,
 /// alamat, tombol maps & ulasan, daftar review pengunjung.
 class RestoranDetailScreen extends StatefulWidget {
-  final Map<String, dynamic> restoran;
+  final RestoranModel restoran;
 
   const RestoranDetailScreen({super.key, required this.restoran});
 
@@ -18,8 +23,9 @@ class RestoranDetailScreen extends StatefulWidget {
 
 class _RestoranDetailScreenState extends State<RestoranDetailScreen> {
   late bool _isFavorit;
+  XFile? _imageFile;
 
-  // ── Dummy detail per restoran ─────────────────────────────────────────────
+  // ── Data statis detail restoran ───────────────────────────────────────────
   static const Map<String, String> _alamatMap = {
     'Donat Bahagiat':
         'Jl. Kemang Raya No.8, Bangka, Mampang Prapatan, Jakarta Selatan 12730',
@@ -69,17 +75,47 @@ class _RestoranDetailScreenState extends State<RestoranDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _isFavorit = widget.restoran['favorit'] as bool;
+    _isFavorit = widget.restoran.favorit;
+  }
+
+  Future<void> _takePicture() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      setState(() {
+        _imageFile = image;
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Foto berhasil diambil!')),
+      );
+    }
+  }
+
+  Future<void> _bukaRuteMaps(String alamat) async {
+    final String encodedAlamat = Uri.encodeComponent(alamat);
+    final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$encodedAlamat');
+    
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Tidak dapat membuka Google Maps')),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final item = widget.restoran;
-    final String gambar = item['gambar'] as String;
-    final String nama = item['nama'] as String;
-    final String kategori = item['kategori'] as String;
-    final double rating = (item['rating'] as num).toDouble();
-    final String jarak = item['jarak'] as String;
+    final String gambar = item.gambar;
+    final String nama = item.nama;
+    final String kategori = item.kategori;
+    final double rating = item.rating;
+    final String jarak = item.jarak;
     final String alamat = _alamatMap[nama] ?? 'Jakarta Selatan, DKI Jakarta';
     final int jumlahUlasan = _jumlahUlasanMap[nama] ?? 5;
 
@@ -290,7 +326,7 @@ class _RestoranDetailScreenState extends State<RestoranDetailScreen> {
                     width: double.infinity,
                     height: 52,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () => _bukaRuteMaps(alamat),
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(
                           color: AppColors.primary,
@@ -313,11 +349,27 @@ class _RestoranDetailScreenState extends State<RestoranDetailScreen> {
                   const SizedBox(height: 12),
 
                   // ── Tambah Ulasan ─────────────────────────────────────────
+                  if (_imageFile != null)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      width: double.infinity,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        image: DecorationImage(
+                          image: kIsWeb 
+                              ? NetworkImage(_imageFile!.path) as ImageProvider
+                              : FileImage(File(_imageFile!.path)),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  
                   SizedBox(
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: _takePicture,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         elevation: 0,
@@ -331,7 +383,7 @@ class _RestoranDetailScreenState extends State<RestoranDetailScreen> {
                         size: 20,
                       ),
                       label: Text(
-                        'TAMBAH ULASAN & FOTO',
+                        'TAMBAH FOTO DARI KAMERA',
                         style: AppTextStyles.body14.copyWith(
                           color: AppColors.white,
                           fontWeight: FontWeight.w700,
