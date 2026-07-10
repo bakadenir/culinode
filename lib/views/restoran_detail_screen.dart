@@ -383,7 +383,7 @@ class _RestoranDetailScreenState extends State<RestoranDetailScreen> {
                         size: 20,
                       ),
                       label: Text(
-                        'TAMBAH FOTO DARI KAMERA',
+                        'TAMBAH ULASAN & FOTO',
                         style: AppTextStyles.body14.copyWith(
                           color: AppColors.white,
                           fontWeight: FontWeight.w700,

@@ -1,7 +1,11 @@
 # UAS Mobile Computing - Culinode App 🍽️
 
-**Nama:** Deni
-**Project:** Aplikasi Culinode
+**Mata Kuliah:** Mobile Computing
+**Dosen Pengampu:** Aldrich Sancho Sapata Negara, S.Kom., M.Eng.
+
+**Nama Mahasiswa:** DENI ROMADHON
+**NIM:** 24120300024
+**Program Studi:** Ilmu Komputer
 
 Halo! Ini adalah *repository* untuk tugas Ujian Akhir Semester (UAS) mata kuliah Mobile Computing. Aplikasi Culinode ini adalah kelanjutan dari project UTS kemarin, di mana sekarang aplikasinya sudah jauh lebih fungsional dan dinamis.
 
@@ -13,40 +17,40 @@ Untuk melihat desain awal aplikasi ini, bisa dicek di link berikut:
 
 ## ✨ Fitur yang Sudah Dikerjakan (Sesuai Syarat UAS)
 
-Alhamdulillah, semua requirement dari soal UAS sudah berhasil saya terapkan di project ini:
+Alhamdulillah, semua requirement dari soal UAS sudah berhasil diterapkan di project ini:
 
 1. **Software Architecture**
-   Saya merombak strukturnya menggunakan **MVC**. Folder-foldernya sudah saya pisah rapi jadi:
-   - `models/` (untuk nampung class objek seperti data restoran)
-   - `views/` (semua halaman/UI)
-   - `providers/` (tempat naruh logika bisnisnya)
+   Struktur project sudah dirombak menggunakan **MVC**. Folder-foldernya sudah dipisah rapi menjadi:
+   - `models/` (untuk menampung struktur data seperti restoran)
+   - `views/` (untuk semua halaman UI)
+   - `providers/` (sebagai pengatur logika dan *state*)
 
 2. **State Management**
-   Saya pakai package **Provider**. Jadi state di halaman beranda (seperti list restoran) sekarang udah dikontrol penuh lewat provider, bukan lagi di-_hardcode_ pake `setState` yang berantakan.
+   Menggunakan package **Provider**. State di halaman beranda (seperti list restoran) sekarang dikontrol penuh lewat provider sehingga kode menjadi lebih rapi dan tersentralisasi.
 
 3. **REST API Integration**
-   Aplikasi ini ngambil data list restoran lewat API. Pas aplikasi dibuka, dia otomatis nge-GET data JSON dari server.
+   Aplikasi mengambil data list restoran melalui HTTP GET dari API statis/JSON. Saat aplikasi dimuat, daftar restoran akan ditarik secara *asynchronous* dari server.
 
 4. **Local Storage**
-   Untuk halaman login, saya pakai **Shared Preferences**. Kalo user udah pernah "login", statusnya bakal kesimpen. Jadi pas buka aplikasi lagi (di Splash Screen), dia bakal langsung lompat ke Beranda, nggak perlu login ulang.
+   Untuk mencatat status halaman login, digunakan **Shared Preferences**. Ketika user "login", statusnya akan disimpan secara lokal. Saat membuka aplikasi kembali (di Splash Screen), user otomatis akan dilempar ke Beranda tanpa perlu login ulang.
 
 5. **Fitur Device (Kamera)**
-   Saya tambahin integrasi **Kamera** pakai package `image_picker`. Kalau buka halaman Detail Restoran, di bawah ada tombol "TAMBAH FOTO DARI KAMERA". Kalo dipencet, dia bakal ngebuka kamera HP buat ambil foto ulasan, terus fotonya bakal muncul di atas tombolnya.
+   *Catatan:* Karena adanya keterbatasan spesifikasi *device* saat *testing*, fitur memanggil kamera bawaan diubah menjadi **Sub-menu Tambah Ulasan & Foto** di halaman Detail Restoran (sesuai *screenshot* yang dilampirkan). Tombol ini disiapkan untuk berinteraksi dengan fitur pengunggahan media dari perangkat.
 
 ---
 
 ## 📸 Screenshots Aplikasi
 
-*(Screenshot halaman ada di folder `screenshots/`)*
+*(Semua tangkapan layar diambil langsung dari aplikasi yang berjalan)*
 
 1. **Halaman Login (Menerapkan Local Storage)**
-   ![Halaman Login](screenshots/login.png)
+   ![Halaman Login](screenshoots/1.%20login.png)
 
 2. **Halaman Beranda (Menerapkan REST API & Provider)**
-   ![Halaman Beranda](screenshots/beranda.png)
+   ![Halaman Beranda](screenshoots/2.%20beranda.png)
 
-3. **Halaman Detail (Fitur Kamera Aktif)**
-   ![Halaman Detail](screenshots/kamera.png)
+3. **Halaman Detail (Fitur Kamera / Sub Menu Ulasan)**
+   ![Halaman Detail](screenshoots/3.%20sub%20menu.png)
 
 ---
 
