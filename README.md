@@ -40,14 +40,9 @@ culinode/
 ## 🚀 Getting Started
 
 ```bash
-# Clone
 git clone https://github.com/bakadenir/culinode.git
 cd culinode
-
-# Install dependencies
 flutter pub get
-
-# Run on connected device/emulator
 flutter run
 ```
 
